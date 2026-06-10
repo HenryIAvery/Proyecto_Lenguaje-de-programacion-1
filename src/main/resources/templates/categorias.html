@@ -1,0 +1,144 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tienda ITQ - Categorías</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-dark text-white p-5">
+    <div class="container">
+      <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-warning">🎵 VINYL HOUSE</h1>
+
+        <p class="lead text-light" th:if="${usuarioLogueado == null}">
+          Descubre álbumes legendarios en CD, Vinilo y Ediciones Coleccionista
+        </p>
+
+        <p
+          class="lead text-success fw-bold"
+          th:if="${usuarioLogueado != null}"
+          th:text="'¡Bienvenido, ' + ${usuarioLogueado.nombre} + '! 🎶'"
+        ></p>
+
+        <nav class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+          <a th:href="@{/}" class="btn btn-warning btn-sm text-dark fw-bold">
+            Inicio
+          </a>
+
+          <a th:ref="@{/catalogo}" class="btn btn-outline-light btn-sm">
+            Catálogo
+          </a>
+          
+          <a th:href="@{/categorias}" class="btn btn-outline-light btn-sm">
+            Categorías
+          </a>
+
+          <a th:href="@{/ofertas}" class="btn btn-outline-light btn-sm">
+            Ofertas
+          </a>
+
+          <a th:href="@{/contacto}" class="btn btn-outline-light btn-sm">
+            Contacto
+          </a>
+
+          <a th:href="@{/carrito}" class="btn btn-outline-warning btn-sm">
+            Mi Carrito 🛒
+          </a>
+
+          <a
+            th:href="@{/historial}"
+            class="btn btn-outline-info btn-sm"
+            th:if="${usuarioLogueado != null}"
+          >
+            Mis Compras
+          </a>
+
+          <a
+            th:if="${usuarioLogueado == null}"
+            th:href="@{/login}"
+            class="btn btn-outline-success btn-sm"
+          >
+            Iniciar Sesión
+          </a>
+
+          <a
+            th:if="${usuarioLogueado != null}"
+            th:href="@{/logout}"
+            class="btn btn-outline-danger btn-sm"
+          >
+            Cerrar Sesión
+          </a>
+        </nav>
+
+        <hr class="border-warning mt-4" />
+      </header>
+
+      <h2 class="text-warning mb-4 text-center">
+        Nuestras Líneas de Distribución
+      </h2>
+
+      <div class="row g-4 mt-2">
+        <div class="col-md-4">
+          <div
+            class="card bg-secondary text-white text-center p-4 border-0 shadow h-100"
+          >
+            <div class="card-body">
+              <h3 class="display-5 text-info">💻</h3>
+              <h4 class="card-title fw-bold my-3">Vinilos</h4>
+              <p class="small opacity-75">
+                CPUs Intel Core y AMD Ryzen para todo tipo de flujos.
+              </p>
+              <a
+                th:href="@{/productos(categoria_id=2)}"
+                class="btn btn-sm btn-info text-dark fw-bold mt-3"
+                >Ver Modelos</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div
+            class="card bg-secondary text-white text-center p-4 border-0 shadow h-100"
+          >
+            <div class="card-body">
+              <h3 class="display-5 text-info">🔌</h3>
+              <h4 class="card-title fw-bold my-3">  Cd's</h4>
+              <p class="small opacity-75">
+                GPUs NVIDIA GeForce y AMD Radeon para renderizado y gaming.
+              </p>
+              <a
+                th:href="@{/productos(categoria='GPUS')}"
+                class="btn btn-sm btn-info text-dark fw-bold mt-3"
+                >Ver Todo</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div
+            class="card bg-secondary text-white text-center p-4 border-0 shadow h-100"
+          >
+            <div class="card-body">
+              <h3 class="display-5 text-info">🎧</h3>
+              <h4 class="card-title fw-bold my-3">Edición Coleccionista</h4>
+              <p class="small opacity-75">
+                Módulos DDR4 y DDR5 de alta velocidad y latencia optimizada.
+              </p>
+              <a
+                th:href="@{/productos(categoria='RAM')}"
+                class="btn btn-sm btn-info text-dark fw-bold mt-3"
+                >Ver Catálogo</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

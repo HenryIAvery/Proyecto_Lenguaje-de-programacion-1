@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda ITQ - Ofertas Exclusivas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-dark text-white p-5">
+
+    <div class="container">
+        <header class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-info">TIENDITA ITQ</h1>
+            <p class="lead text-warning fw-bold">🔥 ZONA DE DESCUENTOS ESPECIALES ITQ 🔥</p>
+            <nav class="d-flex justify-content-center gap-3 mt-3">
+                <a th:href="@{/}" class="btn btn-outline-light btn-sm">Inicio</a>
+                <a th:href="@{/categorias}" class="btn btn-outline-light btn-sm">Categorías</a>
+                <a th:href="@{/ofertas}" class="btn btn-info btn-sm text-dark fw-bold">Ofertas Exclusivas</a>
+                <a th:href="@{/contacto}" class="btn btn-outline-light btn-sm">Contáctanos</a>
+                <a th:href="@{/carrito}" class="btn btn-outline-warning btn-sm">Mi Carrito 🛒</a>
+            </nav>
+            <hr class="border-info">
+        </header>
+
+        <div th:if="${mensajeExito}"
+            class="alert alert-success bg-dark text-success border-success text-center fw-bold mb-4"
+            th:text="${mensajeExito}"></div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="producto : ${productos}">
+                <div class="card bg-secondary text-white h-100 border-0 shadow position-relative">
+
+                    <span class="position-absolute top-0 start-0 m-3 badge bg-danger fs-6 shadow"
+                        th:text="'-' + ${producto.descuento} + '% OFF'">-0% OFF</span>
+
+                    <img th:src="@{${producto.imagenUrl}}" class="card-img-top p-3 mt-4" alt="Oferta"
+                        style="height: 200px; object-fit: contain;">
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between border-bottom border-dark pb-2 mb-2">
+                            <h5 class="card-title text-info fw-bold mb-0" th:text="${producto.nombre}">Producto</h5>
+                            <span class="badge bg-dark align-self-center text-warning"
+                                th:text="${producto.marca}">Marca</span>
+                        </div>
+                        <p class="card-text small opacity-75 flex-grow-1" th:text="${producto.descripcion}">Detalle.</p>
+
+                        <div class="d-flex justify-content-between align-middle mt-3">
+                            <span class="fs-4 fw-bold text-warning" th:text="'$' + ${producto.precio}">$0.00</span>
+                            <span class="small align-self-center opacity-50"
+                                th:text="'Disponibles: ' + ${producto.cantidad}">0</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 p-3">
+                        <form th:action="@{/carrito/agregar}" method="POST">
+                            <input type="hidden" name="id" th:value="${producto.id}">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-danger fw-bold btn-sm">⚡ Capturar Oferta</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
