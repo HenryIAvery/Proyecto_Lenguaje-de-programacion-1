@@ -1,0 +1,215 @@
+/* ==========================================
+   1. PALETA DE COLORES & BASE (AZUL MEDIANOCHE & ARENA)
+   ========================================== */
+body {
+  background: linear-gradient(135deg, #090b11 0%, #0d111a 100%) !important;
+  color: #f1f3f5 !important;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar integrada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090b11;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4b281;
+  border-radius: 4px;
+}
+
+/* Título de la marca */
+.unique-brand-title {
+  color: #d4b281 !important;
+  letter-spacing: 2px;
+  font-weight: 800;
+  text-shadow: 0 4px 15px rgba(212, 178, 129, 0.1);
+}
+
+/* Textos e indicadores en color insignia (Arena) */
+.text-warning,
+.card-title.text-warning {
+  color: #d4b281 !important;
+}
+
+.title-divider,
+hr.border-warning {
+  border-color: rgba(212, 178, 129, 0.2) !important;
+}
+
+/* Alertas estilizadas */
+.custom-alert {
+  background-color: rgba(25, 135, 84, 0.1) !important;
+  border: 1px solid #198754 !important;
+  color: #198754 !important;
+  border-radius: 8px;
+}
+
+/* ==========================================
+   2. REEDICIÓN DEL NAVBAR (MENÚ ESTILIZADO)
+   ========================================== */
+nav.d-flex.justify-content-center {
+  background-color: rgba(19, 24, 34, 0.6); /* Fondo translúcido */
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: 1px solid rgba(212, 178, 129, 0.08);
+  backdrop-filter: blur(8px); /* Efecto esmerilado */
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* Convertir los enlaces "btn-outline-light" en texto limpio de navegación */
+nav.d-flex .btn-outline-light {
+  border: none !important;
+  background: transparent !important;
+  color: #f1f3f5 !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition:
+    color 0.3s ease,
+    transform 0.2s ease;
+  padding: 6px 12px !important;
+}
+
+nav.d-flex .btn-outline-light:hover {
+  color: #d4b281 !important; /* Cambia al tono arena */
+  transform: translateY(-1px);
+}
+
+/* Resaltado especial para el Carrito y botones de estado */
+nav.d-flex .btn-outline-warning,
+nav.d-flex .btn-outline-success,
+nav.d-flex .btn-outline-danger {
+  border-radius: 20px !important;
+  padding: 6px 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+/* ==========================================
+   3. CUADRÍCULA DEL CATÁLOGO & COLOR SEGURO
+   ========================================== */
+.catalogo-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 310px)) !important;
+  gap: 2.5rem !important;
+  justify-content: center !important;
+  padding: 20px 0;
+  width: 100% !important;
+}
+
+.catalogo-grid > .col {
+  width: 100% !important;
+  max-width: 310px !important;
+  flex: none !important;
+}
+
+/* MODIFICADO: Añadimos .bg-secondary para tumbar el gris claro de Bootstrap */
+.item-card,
+.card.bg-secondary,
+.featured-card.bg-secondary {
+  background-color: #131822 !important; /* Nuestro azul pizarra medianoche real */
+  border: 1px solid rgba(212, 178, 129, 0.08) !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 480px;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.item-card:hover,
+.card.bg-secondary:hover {
+  transform: translateY(-5px);
+  border-color: rgba(212, 178, 129, 0.25) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+}
+/* ==========================================
+   4. PORTADAS 1:1 CUADRADAS REALES
+   ========================================== */
+.album-cover-container {
+  width: 100% !important;
+  max-width: 310px !important;
+  aspect-ratio: 1 / 1 !important; /* Cuadrado perfecto obligatorio */
+  overflow: hidden !important;
+  position: relative !important;
+  background-color: #05070a !important;
+}
+
+/* El truco final: obligamos a la imagen a llenar el cuadrado sin estirarse */
+.album-cover-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* Recorta los bordes sobrantes, nunca estira */
+  display: block !important;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.item-card:hover .album-cover-img {
+  transform: scale(1.04) !important;
+}
+
+/* Mantenemos el banner del Home a salvo */
+.featured-card {
+  background-color: #131822 !important;
+  border: 1px solid rgba(212, 178, 129, 0.08) !important;
+  border-radius: 12px !important;
+  max-width: 900px !important;
+  width: 100% !important;
+}
+
+/* ==========================================
+   5. BOTONES DE ACCIÓN (OPTIMIZADOS PARA VENTAS)
+   ========================================== */
+/* El botón principal: Llama la atención con elegancia clásica */
+.btn-warning, .action-btn, .cta-button {
+    background-color: #c49a62 !important; /* Oro viejo / Mostaza elegante */
+    border-color: #c49a62 !important;
+    color: #090b11 !important; /* Texto oscuro para un contraste limpio y legible */
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    padding: 10px 20px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Lo eleva visualmente sobre el fondo */
+}
+
+/* Efecto Hover: Se ilumina sutilmente e invita al usuario a hacer clic */
+.btn-warning:hover, .action-btn:hover, .cta-button:hover {
+    background-color: #e5cda8 !important; /* Champaña brillante al pasar el mouse */
+    border-color: #e5cda8 !important;
+    color: #090b11 !important;
+    transform: translateY(-2px) !important; /* Pequeño salto orgánico */
+    box-shadow: 0 6px 15px rgba(196, 154, 98, 0.25) !important; /* Destello sutil en su propio color */
+}
+
+/* Efecto Active: Cuando el usuario da clic físico, simula que se hunde */
+.btn-warning:active, .action-btn:active, .cta-button:active {
+    transform: translateY(1px) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Contornos de botones secundarios en el menú (Enlaces limpios) */
+.btn-outline-warning {
+    border-color: rgba(196, 154, 98, 0.4) !important;
+    color: #c49a62 !important;
+    border-radius: 20px !important;
+    transition: all 0.3s ease !important;
+}
+.btn-outline-warning:hover {
+    background-color: #c49a62 !important;
+    color: #090b11 !important;
+}
+
+/* Badges e indicadores de formato */
+.badge.bg-warning {
+    background-color: rgba(196, 154, 98, 0.12) !important;
+    color: #c49a62 !important;
+    border: 1px solid rgba(196, 154, 98, 0.25);
+    font-weight: 600;
+}
