@@ -1,81 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Comprobante de Orden</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-dark text-white p-5">
-
-    <div class="container" style="max-width: 700px;">
-        <div class="card bg-secondary text-white border-0 shadow">
-            
-            <div class="card-header bg-dark text-center py-4 border-bottom border-secondary">
-                <h1 class="text-info fw-bold mb-1">TIENDITA ITQ</h1>
-                <p class="text-muted small mb-0">Comprobante Oficial de Compra - Retiro en Caja</p>
-            </div>
-
-            <div class="card-body p-4">
-                <div class="alert alert-success bg-opacity-10 border-success text-center text-success mb-4">
-                    🎉 ¡Tu orden ha sido procesada con éxito! Presenta este ticket para retirar tus productos.
-                </div>
-
-                <div class="row mb-4 small">
-                    <div class="col-6">
-                        <p class="mb-1 text-info fw-bold">NÚMERO DE ORDEN:</p>
-                        <p class="fs-5 fw-bold" th:text="'#ITQ-' + ${pedido.id}">#0</p>
-                    </div>
-                    <div class="col-6 text-end">
-                        <p class="mb-1 text-info fw-bold">FECHA EMISIÓN:</p>
-                        <p class="fs-6" th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</p>
-                    </div>
-                </div>
-
-                <hr class="border-secondary">
-
-                <div class="mb-4 small">
-                    <h5 class="text-warning mb-2">Datos del Cliente</h5>
-                    <p class="mb-1"><strong>Nombre:</strong> <span th:text="${pedido.usuario.nombre}">Cliente</span></p>
-                    <p class="mb-0"><strong>Correo:</strong> <span th:text="${pedido.usuario.correo}">correo@itq.edu.ec</span></p>
-                </div>
-
-                <h5 class="text-warning small mb-2">Artículos Solicitados</h5>
-                <div class="table-responsive">
-                    <table class="table table-dark table-striped table-bordered align-middle small">
-                        <thead>
-                            <tr class="text-info">
-                                <th>Producto</th>
-                                <th class="text-center" style="width: 15%;">Cant.</th>
-                                <th class="text-end" style="width: 25%;">Precio Unit.</th>
-                                <th class="text-end" style="width: 25%;">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="detalle : ${pedido.detalles}">
-                                <td th:text="${detalle.producto.nombre}">Producto</td>
-                                <td class="text-center" th:text="${detalle.cantidad}">1</td>
-                                <td class="text-end" th:text="'$' + ${detalle.precioUnitario}">$0.00</td>
-                                <td class="text-end" th:text="'$' + (${detalle.cantidad} * ${detalle.precioUnitario})">$0.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row justify-content-end mt-4">
-                    <div class="col-6 text-end">
-                        <p class="mb-1 small">Manejo y Gestión de Envío: <strong class="text-info">$15.00</strong></p>
-                        <p class="fs-4 fw-bold text-warning mb-0">Total a Pagar: <span th:text="'$' + ${pedido.total}">$0.00</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-footer bg-dark text-center py-3 border-top border-secondary">
-                <a th:href="@{/}" class="btn btn-info text-dark fw-bold btn-sm px-4 me-2">Volver al Inicio</a>
-                <a th:href="@{/historial}" class="btn btn-outline-light btn-sm px-4">Ver Mis Compras</a>
-            </div>
-
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vinyl House - Comprobante de Orden</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-dark text-white p-5">
+    <div class="container" style="max-width: 700px">
+      <div class="card bg-secondary text-white border-0 shadow">
+        <div
+          class="card-header bg-dark text-center py-4 border-bottom border-secondary"
+        >
+          <h1 class="text-warning fw-bold mb-1">🎵 VINYL HOUSE</h1>
+          <p class="text-light opacity-75 small mb-0">
+            Comprobante Oficial de Compra
+          </p>
         </div>
-    </div>
 
-</body>
+        <div class="card-body p-4">
+          <div
+            class="alert alert-success bg-opacity-10 border-success text-center text-success mb-4"
+          >
+            🎶 ¡Tu orden ha sido procesada con éxito! Tus artículos de colección
+            están preparándose.
+          </div>
+
+          <div class="row mb-4 small">
+            <div class="col-6">
+              <p class="mb-1 text-warning fw-bold">NÚMERO DE ORDEN:</p>
+              <p class="fs-5 fw-bold" th:text="'#VINYL-' + ${pedido.id}">#0</p>
+            </div>
+            <div class="col-6 text-end">
+              <p class="mb-1 text-warning fw-bold">FECHA EMISIÓN:</p>
+              <p
+                class="fs-6"
+                th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}"
+              >
+                00/00/0000 00:00
+              </p>
+            </div>
+          </div>
+
+          <hr class="border-secondary" />
+
+          <div class="mb-4 small">
+            <h5 class="text-warning mb-2">Datos del Coleccionista</h5>
+            <p class="mb-1">
+              <strong>Nombre:</strong>
+              <span th:text="${pedido.usuario.nombre}">Cliente</span>
+            </p>
+            <p class="mb-0">
+              <strong>Correo:</strong>
+              <span th:text="${pedido.usuario.correo}">correo@email.com</span>
+            </p>
+          </div>
+
+          <h5 class="text-warning small mb-2">Artículos Adquiridos</h5>
+          <div class="table-responsive">
+            <table
+              class="table table-dark table-striped table-bordered align-middle small"
+            >
+              <thead>
+                <tr class="text-warning">
+                  <th>Producto / Formato</th>
+                  <th class="text-center" style="width: 15%">Cant.</th>
+                  <th class="text-end" style="width: 25%">Precio Unit.</th>
+                  <th class="text-end" style="width: 25%">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="detalle : ${pedido.detalles}">
+                  <td th:text="${detalle.producto.nombre}">
+                    Nombre del Producto
+                  </td>
+                  <td class="text-center" th:text="${detalle.cantidad}">1</td>
+                  <td
+                    class="text-end"
+                    th:text="'$' + ${#numbers.formatDecimal(detalle.precioUnitario, 1, 2)}"
+                  >
+                    $0.00
+                  </td>
+                  <td
+                    class="text-end"
+                    th:text="'$' + ${#numbers.formatDecimal((detalle.cantidad * detalle.precioUnitario), 1, 2)}"
+                  >
+                    $0.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row justify-content-end mt-4">
+            <div class="col-6 text-end">
+              <p class="mb-1 small">
+                Envío Seguro (Música y Coleccionables):
+                <strong class="text-success">Gratis</strong>
+              </p>
+              <p class="fs-4 fw-bold text-warning mb-0">
+                Total a Pagar:
+                <span
+                  th:text="'$' + ${#numbers.formatDecimal(pedido.total, 1, 2)}"
+                  >$0.00</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="card-footer bg-dark text-center py-3 border-top border-secondary"
+        >
+          <a
+            th:href="@{/}"
+            class="btn btn-warning text-dark fw-bold btn-sm px-4 me-2"
+            >Volver a la Tienda</a
+          >
+          <a th:href="@{/historial}" class="btn btn-outline-light btn-sm px-4"
+            >Ver Mi Colección</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

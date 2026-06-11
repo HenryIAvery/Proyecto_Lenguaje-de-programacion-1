@@ -1,8 +1,20 @@
 package com.example.tienda.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pedidos")
@@ -35,8 +47,9 @@ public class Pedido {
     private String ciudadProvincia;
     private String metodoPago;
 
+    // CAMBIO CLAVE 1: Usar Set en lugar de List
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DetallePedido> detalles;
+    private Set<DetallePedido> detalles = new HashSet<>();
 
     public Pedido() {
     }
@@ -54,6 +67,7 @@ public class Pedido {
         this.metodoPago = metodoPago;
     }
 
+    // ... (Todos tus otros Getters y Setters se mantienen igual) ...
     public Long getId() {
         return id;
     }
@@ -134,11 +148,12 @@ public class Pedido {
         this.metodoPago = metodoPago;
     }
 
-    public List<DetallePedido> getDetalles() {
+    // CAMBIO CLAVE 2: Actualizar Getter y Setter para usar Set
+    public Set<DetallePedido> getDetalles() {
         return detalles;
     }
 
-    public void setDetalles(List<DetallePedido> detalles) {
+    public void setDetalles(Set<DetallePedido> detalles) {
         this.detalles = detalles;
     }
 }

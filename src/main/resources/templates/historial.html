@@ -2,52 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Historial de Compras</title>
+    <title>Vinyl House - Mi Colección</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-white p-5">
 
     <div class="container">
         <header class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-info">TIENDITA ITQ</h1>
-            <p class="lead text-secondary">Historial Cronológico de tus Órdenes</p>
-            <nav class="d-flex justify-content-center gap-3 mt-3">
+            <h1 class="display-4 fw-bold text-warning">🎵 VINYL HOUSE</h1>
+            <p class="lead text-light opacity-75">Historial Cronológico de tu Colección</p>
+            
+            <nav class="d-flex justify-content-center gap-3 mt-3 flex-wrap">
                 <a th:href="@{/}" class="btn btn-outline-light btn-sm">Inicio</a>
-                <a th:href="@{/categorias}" class="btn btn-outline-light btn-sm">Categorías</a>
+                <a th:href="@{/categorias}" class="btn btn-outline-light btn-sm">Formatos y Géneros</a>
                 <a th:href="@{/ofertas}" class="btn btn-outline-light btn-sm">Ofertas</a>
-                <a th:href="@{/historial}" class="btn btn-info btn-sm text-dark fw-bold">Mis Compras </a>
+                <a th:href="@{/historial}" class="btn btn-warning btn-sm text-dark fw-bold">Mis Compras</a>
                 <a th:href="@{/carrito}" class="btn btn-outline-warning btn-sm">Mi Carrito 🛒</a>
             </nav>
-            <hr class="border-info">
+            <hr class="border-warning mt-4">
         </header>
 
         <h2 class="text-warning mb-4">Mis Pedidos Registrados</h2>
 
-        <div th:if="${#lists.isEmpty(pedidos)}" class="text-center py-5 card bg-secondary text-white border-0">
-            <p class="lead opacity-50 mb-0">Aún no has realizado ninguna compra en el sistema.</p>
+        <div th:if="${#lists.isEmpty(pedidos)}" class="text-center py-5 card bg-secondary text-white border-0 shadow">
+            <p class="lead opacity-50 mb-0">Aún no has agregado ningún disco o artículo a tu historial.</p>
         </div>
 
         <div th:if="${not #lists.isEmpty(pedidos)}">
             <div th:each="pedido : ${pedidos}" class="card bg-secondary text-white border-0 mb-4 shadow">
-                <div class="card-header bg-dark d-flex justify-content-between align-items-center border-bottom border-secondary">
+                
+                <div class="card-header bg-dark d-flex flex-wrap justify-content-between align-items-center border-bottom border-secondary py-3">
                     <div>
-                        <span class="fw-bold text-info" th:text="'Orden #ITQ-' + ${pedido.id}">#0</span>
+                        <span class="fw-bold text-warning" th:text="'Orden #VINYL-' + ${pedido.id}">#0</span>
                         <span class="mx-2 opacity-50">|</span>
                         <span class="small" th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span>
                     </div>
-                    <div>
-                        <span class="fw-bold text-warning fs-5" th:text="'Total: $' + ${pedido.total}">$0.00</span>
-                        <a th:href="@{/pedido/confirmacion/{id}(id=${pedido.id})}" class="btn btn-sm btn-outline-info ms-3">🔍 Ver Ticket</a>
+                    <div class="mt-2 mt-md-0">
+                        <span class="fw-bold text-warning fs-5" th:text="'Total: $' + ${#numbers.formatDecimal(pedido.total, 1, 2)}">$0.00</span>
+                        <a th:href="@{/pedido/confirmacion/{id}(id=${pedido.id})}" class="btn btn-sm btn-outline-warning ms-3">🔍 Ver Ticket</a>
                     </div>
                 </div>
+                
                 <div class="card-body">
-                    <p class="small text-info mb-2 fw-bold">Ítems incluidos:</p>
-                    <ul class="mb-0 small item-list">
+                    <p class="small text-warning mb-2 fw-bold">Artículos incluidos:</p>
+                    <ul class="mb-0 small item-list opacity-75">
                         <li th:each="detalle : ${pedido.detalles}" 
-                            th:text="${detalle.producto.nombre} + ' (x' + ${detalle.cantidad} + ') - Subtotal: $' + (${detalle.cantidad} * ${detalle.precioUnitario})">
+                            th:text="${detalle.producto.nombre} + ' (x' + ${detalle.cantidad} + ') - Subtotal: $' + ${#numbers.formatDecimal((detalle.cantidad * detalle.precioUnitario), 1, 2)}">
                         </li>
                     </ul>
                 </div>
+                
             </div>
         </div>
     </div>

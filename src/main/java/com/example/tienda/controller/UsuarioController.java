@@ -1,19 +1,30 @@
 package com.example.tienda.controller;
 
-import com.example.tienda.model.Usuario; 
-import com.example.tienda.repository.UsuarioRepository; 
-import jakarta.servlet.http.HttpSession; 
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.stereotype.Controller; 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; 
-import java.util.Optional; 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping; // Importación del encriptador
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam; 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.tienda.model.Usuario;
+import com.example.tienda.repository.UsuarioRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller 
 public class UsuarioController {
 
     @Autowired 
     private UsuarioRepository usuarioRepository;
+
+    // CONEXIÓN AUTOMÁTICA: Inyectamos el encriptador registrado en SecurityConfig
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/login") 
     public String mostrarLogin() {
@@ -25,13 +36,13 @@ public class UsuarioController {
             @RequestParam("password") String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-        try { // Bloque de seguridad para capturar fallos sin interrumpir la web
+        try { 
 
             // Busca en MySQL si existe algún usuario con el correo ingresado
             Optional<Usuario> userOpt = usuarioRepository.findByCorreo(correo);
 
-            // Verifica si el correo existe Y si la contraseña coincide exactamente con la guardada
-            if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            // MODIFICACIÓN CLAVE 1: Comparamos la clave usando passwordEncoder.matches()
+            if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
                 // Guarda los datos del usuario en la sesión del navegador para mantenerlo conectado
                 session.setAttribute("usuarioLogueado", userOpt.get());
                 return "redirect:/"; 
@@ -40,8 +51,7 @@ public class UsuarioController {
                 redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas. Verifique correo o clave.");
                 return "redirect:/login"; 
             }
-        } catch (Exception e) { // Captura problemas inesperados (como si se cae el servidor de la base de datos)
-            // Prepara un aviso de error de conexión en la pantalla
+        } catch (Exception e) { 
             redirectAttributes.addFlashAttribute("error", "Error de comunicación con el servicio de autenticación.");
             return "redirect:/login"; 
         }
@@ -54,16 +64,19 @@ public class UsuarioController {
 
     @PostMapping("/registro") 
     public String procesarRegistro(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
-        try { // Bloque de seguridad para el proceso de inserción en la base de datos
+        try { 
 
             // CONTROL DE SEGURIDAD: Verifica si el correo ingresado ya pertenece a otra cuenta en MySQL
             if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
-                // Si ya existe, detiene el registro y prepara un aviso en rojo de correo  duplicado
                 redirectAttributes.addFlashAttribute("error", "El correo electrónico ya se encuentra registrado.");
                 return "redirect:/registro";
             }
 
-            // Si el correo está libre, guarda el nuevo usuario de forma definitiva en la  base de datos
+            // MODIFICACIÓN CLAVE 2: Encriptamos la contraseña en texto plano antes de guardarla
+            String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
+            usuario.setPassword(passwordEncriptada);
+
+            // Guarda el nuevo usuario (ahora con la contraseña oculta) de forma definitiva en MySQL
             usuarioRepository.save(usuario);
 
             // Prepara un mensaje de éxito flotante en verde para la siguiente pantalla
@@ -71,8 +84,7 @@ public class UsuarioController {
                     "Registro completado con éxito. Ya puede iniciar sesión.");
             return "redirect:/login"; 
 
-        } catch (Exception e) { // Captura errores en caso de que falle la inserción física en MySQL
-            // Prepara un mensaje de advertencia informando sobre el fallo técnico
+        } catch (Exception e) { 
             redirectAttributes.addFlashAttribute("error",
                     "No se pudo completar el registro debido a un fallo en base de datos.");
             return "redirect:/registro"; 
@@ -81,7 +93,7 @@ public class UsuarioController {
 
     @GetMapping("/logout") 
     public String cerrarSesion(HttpSession session) {
-        session.invalidate(); // Destruye y borra toda la información guardada en la sesión del navegador
+        session.invalidate(); 
         return "redirect:/";
     }
 }
