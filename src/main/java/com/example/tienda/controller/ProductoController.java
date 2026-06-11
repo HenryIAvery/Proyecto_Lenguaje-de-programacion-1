@@ -55,20 +55,30 @@ public class ProductoController {
     }
 
     @GetMapping("/catalogo")
-    public String mostrarCatalogo(HttpSession session, Model model) {
+public String mostrarCatalogo(
+        @RequestParam(required = false) Long categoriaId,
+        HttpSession session,
+        Model model) {
 
-        model.addAttribute(
-                "usuarioLogueado",
-                session.getAttribute("usuarioLogueado")
-        );
-    
+    model.addAttribute(
+            "usuarioLogueado",
+            session.getAttribute("usuarioLogueado"));
+
+    if (categoriaId == null) {
+
         model.addAttribute(
                 "productos",
-                productoRepository.findAll()
-        );
+                productoRepository.findAll());
 
-        return "catalogo";
+    } else {
+
+        model.addAttribute(
+                "productos",
+                productoRepository.findByCategoria_Id(categoriaId));
     }
+
+    return "catalogo";
+}
 
     @GetMapping("/categorias")
     public String verCategorias(HttpSession session, Model model) {
@@ -78,26 +88,7 @@ public class ProductoController {
         return "categorias";
     }
 
-    @GetMapping("/productos")
-    public String listarProductos(@RequestParam(name = "categoria", required = false) String categoria,
-            HttpSession session, Model model) {
 
-        // Verifica si el usuario seleccionó o escribió una categoría válida en la URL
-        if (categoria != null && !categoria.isEmpty()) {
-            // Busca en MySQL ignorando mayúsculas/minúsculas (ej: "gpus" o "GPUS" darán el mismo resultado)
-            model.addAttribute("productos", productoRepository.findByCategoriaIgnoreCase(categoria));
-            // Pasa el nombre de la categoría en mayúsculas para usarlo como título en el HTML
-            model.addAttribute("categoriaSeleccionada", categoria.toUpperCase());
-        } else {
-            // Si no se especificó ninguna categoría en la URL, carga todo el inventario por defecto
-            model.addAttribute("productos", productoRepository.findAll());
-        }
-
-        // Mantiene al usuario conectado en la cabecera de la página
-        model.addAttribute("usuarioLogueado", session.getAttribute("usuarioLogueado"));
-
-        return "index";
-    }
 
     @GetMapping("/ofertas")
     public String verOfertas(HttpSession session, Model model) {
