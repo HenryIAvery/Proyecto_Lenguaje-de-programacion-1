@@ -1,5 +1,8 @@
-package com.example.tienda.model;
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
 
+package com.example.tienda.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,11 +29,9 @@ import jakarta.persistence.Table;
             this.nombre = nombre;
         }
         
-
         public Long getId() {
             return id;
         }
-
 
         public String getNombre() {
             return nombre;

@@ -1,3 +1,7 @@
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
+
 package com.example.tienda.model;
 
 import java.time.LocalDateTime;
@@ -67,7 +71,7 @@ public class Pedido {
         this.metodoPago = metodoPago;
     }
 
-    // ... (Todos tus otros Getters y Setters se mantienen igual) ...
+    
     public Long getId() {
         return id;
     }

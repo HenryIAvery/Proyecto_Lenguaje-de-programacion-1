@@ -1,3 +1,7 @@
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
+
 package com.example.tienda.controller;
 
 import java.util.Optional;

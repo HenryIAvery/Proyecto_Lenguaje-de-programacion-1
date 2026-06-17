@@ -1,3 +1,7 @@
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
+
 package com.example.tienda.model;
 
 import java.util.List;
@@ -45,12 +49,7 @@ public class Producto {
     @Column(nullable = false)
     private Boolean enOferta;
 
-    // --- RELACIÓN UNO A MUCHOS: UN PRODUCTO APARECE EN MUCHOS DETALLES DE PEDIDOS
-    // ---
-    // 'mappedBy = "producto"' enlaza esta propiedad con la variable 'producto'
-    // definida en la clase DetallePedido.
-    // 'cascade = CascadeType.ALL' propaga los cambios o actualizaciones de este
-    // artículo hacia sus detalles en cascada.
+    
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<DetallePedido> detalles; // Lista que rastrea en qué renglones de qué facturas se ha vendido este producto
 

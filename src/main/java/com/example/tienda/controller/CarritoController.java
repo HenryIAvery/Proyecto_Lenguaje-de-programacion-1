@@ -1,3 +1,7 @@
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
+
 package com.example.tienda.controller;
 
 import java.time.LocalDateTime;
@@ -11,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // Importación necesaria para el Set
+import org.springframework.web.bind.annotation.PathVariable; 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes; // Importación necesaria para el Set
+import org.springframework.web.servlet.mvc.support.RedirectAttributes; 
 
 import com.example.tienda.model.DetallePedido;
 import com.example.tienda.model.ItemCarrito;
@@ -134,7 +138,7 @@ public class CarritoController {
         return "redirect:/carrito"; 
     }
 
-    // PROCESA LA COMPRA FINAL (Música y Coleccionables)
+    // PROCESA LA COMPRA FINAL (Música y Coleccionables con Control de Stock Activo)
     @GetMapping("/carrito/pagar") 
     public String pagar(HttpSession session, Model model) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
@@ -164,11 +168,8 @@ public class CarritoController {
             // 3. CÓMPUTO DE IVA Y ENVÍO GRATIS (Ajustado para Vinyl House)
             double iva = subtotalAcumulado * 0.15; 
             pedido.setImpuestosIva(Math.round(iva * 100.0) / 100.0); 
-            
-            // AJUSTE 1: Envío Gratis en Base de Datos
             pedido.setEnvioPrecio(0.0); 
 
-            // AJUSTE 2: Ya no sumamos los 15 dólares al total
             double totalFinal = subtotalAcumulado + iva; 
             pedido.setTotal(Math.round(totalFinal * 100.0) / 100.0); 
 
@@ -176,23 +177,41 @@ public class CarritoController {
             pedido.setCiudadProvincia("Quito");
             pedido.setMetodoPago("Efectivo / Tarjeta en Caja");
 
-            // 4. TRANSFORMACIÓN A DETALLES DE BASE DE DATOS
-            Set<DetallePedido> detalles = new HashSet<>(); // Ajustado a Set para que coincida con el modelo
+            // 4. TRANSFORMACIÓN A DETALLES DE BASE DE DATOS Y REDUCCIÓN DE STOCK
+            Set<DetallePedido> detalles = new HashSet<>(); 
             for (ItemCarrito item : carrito) {
+                Producto productoDB = item.getProducto();
+                
+                // --- VALIDACIÓN Y CONTROL DE STOCK INCORPORADO ---
+                int stockDisponible = productoDB.getCantidad();
+                int cantidadComprada = item.getCantidad();
+                int nuevoStockCalculado = stockDisponible - cantidadComprada;
+                
+                // Candado de seguridad preventivo
+                if (nuevoStockCalculado < 0) {
+                    throw new Exception("Stock insuficiente para el álbum: " + productoDB.getNombre() + 
+                                        " (Disponible: " + stockDisponible + ")");
+                }
+                
+                // Actualiza la entidad del producto y lo inyecta a MySQL (UPDATE)
+                productoDB.setCantidad(nuevoStockCalculado);
+                productoRepository.save(productoDB);
+                // --------------------------------------------------
+
                 DetallePedido detalle = new DetallePedido(); 
                 detalle.setPedido(pedido); 
-                detalle.setProducto(item.getProducto()); 
-                detalle.setCantidad(item.getCantidad()); 
+                detalle.setProducto(productoDB); 
+                detalle.setCantidad(cantidadComprada); 
 
                 double precioUnitarioFila = item.getPrecioCobrado();
                 detalle.setPrecioUnitario(precioUnitarioFila); 
 
-                double subtotalItem = precioUnitarioFila * item.getCantidad();
+                double subtotalItem = precioUnitarioFila * cantidadComprada;
                 detalle.setSubtotalProducto(Math.round(subtotalItem * 100.0) / 100.0); 
 
                 detalles.add(detalle); 
             }
-            pedido.setDetalles(detalles); // Asigna el Set mapeado correctamente
+            pedido.setDetalles(detalles); 
 
             // 5. INSERCIÓN EN MYSQL
             Pedido pedidoGuardado = pedidoRepository.save(pedido);
@@ -238,13 +257,9 @@ public class CarritoController {
             return "redirect:/login"; 
         }
 
-        // 1. Trae los pedidos usando el repositorio optimizado
         List<Pedido> misPedidos = pedidoRepository.findByUsuario(usuarioLogueado);
-
-        // 2. AJUSTE 3: Filtro definitivo en memoria para pulverizar duplicados rebeldes
         List<Pedido> pedidosLimpios = misPedidos.stream().distinct().toList();
 
-        // 3. Envía la lista purgada al HTML
         model.addAttribute("pedidos", pedidosLimpios);
         return "historial"; 
     }

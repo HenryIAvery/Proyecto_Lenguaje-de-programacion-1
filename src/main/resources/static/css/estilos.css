@@ -1,3 +1,7 @@
+/* Desarrollo de software */
+/* Henry Mauricio Paredes Quintanilla */
+/* Lenguaje de programacion I */
+
 /* ==========================================
    1. PALETA DE COLORES & BASE (AZUL MEDIANOCHE & ARENA)
    ========================================== */
@@ -105,11 +109,10 @@ nav.d-flex .btn-outline-danger {
   flex: none !important;
 }
 
-/* MODIFICADO: Añadimos .bg-secondary para tumbar el gris claro de Bootstrap */
+/* Tarjetas estándar del catálogo */
 .item-card,
-.card.bg-secondary,
-.featured-card.bg-secondary {
-  background-color: #131822 !important; /* Nuestro azul pizarra medianoche real */
+.card.bg-secondary {
+  background-color: #131822 !important;
   border: 1px solid rgba(212, 178, 129, 0.08) !important;
   border-radius: 8px !important;
   display: flex !important;
@@ -129,23 +132,23 @@ nav.d-flex .btn-outline-danger {
   border-color: rgba(212, 178, 129, 0.25) !important;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
 }
+
 /* ==========================================
    4. PORTADAS 1:1 CUADRADAS REALES
    ========================================== */
 .album-cover-container {
   width: 100% !important;
   max-width: 310px !important;
-  aspect-ratio: 1 / 1 !important; /* Cuadrado perfecto obligatorio */
+  aspect-ratio: 1 / 1 !important;
   overflow: hidden !important;
   position: relative !important;
   background-color: #05070a !important;
 }
 
-/* El truco final: obligamos a la imagen a llenar el cuadrado sin estirarse */
 .album-cover-img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important; /* Recorta los bordes sobrantes, nunca estira */
+  object-fit: cover !important;
   display: block !important;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -154,47 +157,62 @@ nav.d-flex .btn-outline-danger {
   transform: scale(1.04) !important;
 }
 
-/* Mantenemos el banner del Home a salvo */
-.featured-card {
+/* ==========================================
+   4B. CRASH FIX: CONTROL TOTAL DE LA RECOMENDACIÓN (PC)
+   ========================================== */
+.featured-card,
+.featured-card.bg-secondary,
+[class*="recomendacion"] {
   background-color: #131822 !important;
   border: 1px solid rgba(212, 178, 129, 0.08) !important;
   border-radius: 12px !important;
   max-width: 900px !important;
   width: 100% !important;
+  margin: 0 auto !important;
+  
+  /* Bloqueo estricto contra el estiramiento vertical de Bootstrap */
+  height: auto !important;
+  min-height: unset !important;
+  max-height: 360px !important; 
+  align-self: center !important; 
+}
+
+/* Forzamos a la imagen interna de la recomendación a mantener su proporción */
+.featured-card img,
+[class*="recomendacion"] img {
+  max-height: 360px !important;
+  width: auto !important;
+  object-fit: contain !important;
 }
 
 /* ==========================================
    5. BOTONES DE ACCIÓN (OPTIMIZADOS PARA VENTAS)
    ========================================== */
-/* El botón principal: Llama la atención con elegancia clásica */
 .btn-warning, .action-btn, .cta-button {
-    background-color: #c49a62 !important; /* Oro viejo / Mostaza elegante */
+    background-color: #c49a62 !important;
     border-color: #c49a62 !important;
-    color: #090b11 !important; /* Texto oscuro para un contraste limpio y legible */
+    color: #090b11 !important;
     font-weight: 700 !important;
     letter-spacing: 0.5px;
     padding: 10px 20px !important;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     border-radius: 6px !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important; /* Lo eleva visualmente sobre el fondo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Efecto Hover: Se ilumina sutilmente e invita al usuario a hacer clic */
 .btn-warning:hover, .action-btn:hover, .cta-button:hover {
-    background-color: #e5cda8 !important; /* Champaña brillante al pasar el mouse */
+    background-color: #e5cda8 !important;
     border-color: #e5cda8 !important;
     color: #090b11 !important;
-    transform: translateY(-2px) !important; /* Pequeño salto orgánico */
-    box-shadow: 0 6px 15px rgba(196, 154, 98, 0.25) !important; /* Destello sutil en su propio color */
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(196, 154, 98, 0.25) !important;
 }
 
-/* Efecto Active: Cuando el usuario da clic físico, simula que se hunde */
 .btn-warning:active, .action-btn:active, .cta-button:active {
     transform: translateY(1px) !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Contornos de botones secundarios en el menú (Enlaces limpios) */
 .btn-outline-warning {
     border-color: rgba(196, 154, 98, 0.4) !important;
     color: #c49a62 !important;
@@ -206,10 +224,97 @@ nav.d-flex .btn-outline-danger {
     color: #090b11 !important;
 }
 
-/* Badges e indicadores de formato */
 .badge.bg-warning {
     background-color: rgba(196, 154, 98, 0.12) !important;
     color: #c49a62 !important;
     border: 1px solid rgba(196, 154, 98, 0.25);
     font-weight: 600;
+}
+
+/* ==========================================
+   6. CORRECCIÓN EXCLUSIVA PARA CELULARES
+   ========================================== */
+@media (max-width: 768px) {
+  .container, .row, main, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  nav.d-flex.justify-content-center {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    border-radius: 15px !important;
+    padding: 12px !important;
+  }
+
+  nav.d-flex .btn-outline-light,
+  nav.d-flex .btn-outline-warning {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 8px 0 !important;
+  }
+
+  /* Liberamos el max-height en el teléfono para que quepa en vertical */
+  .featured-card,
+  .featured-card.bg-secondary,
+  [class*="recomendacion"] {
+    max-height: unset !important;
+    height: auto !important;
+  }
+
+  .featured-card .row,
+  [class*="recomendacion"] .row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .featured-card img,
+  [class*="recomendacion"] img {
+    max-width: 250px !important;
+    max-height: 250px !important;
+    width: 100% !important;
+    margin: 0 auto 15px auto !important;
+    display: block !important;
+    object-fit: cover !important;
+  }
+}
+
+/* ==========================================
+   7. FIX DEFINITIVO: TARJETA DE RECOMENDACIÓN
+   ========================================== */
+/* Forzamos a la tarjeta a medir exactamente lo que mide su contenido */
+.my-5 .card {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
+    display: block !important; /* Rompe el estiramiento heredado de Bootstrap */
+}
+
+/* Forzamos a la fila interna a no estirar las columnas */
+.my-5 .card .row {
+    align-items: center !important; /* Centra verticalmente la imagen con el texto */
+    height: auto !important;
+}
+
+/* Evitamos que la columna de la imagen tome alturas raras */
+.my-5 .card .col-md-4 {
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* La imagen de la portada recupera su comportamiento natural y limpio */
+.my-5 .card img {
+    height: auto !important;
+    max-height: 320px !important; /* Controla el tamaño máximo en PC */
+    width: 100% !important;
+    object-fit: contain !important; /* Evita recortes extraños */
 }

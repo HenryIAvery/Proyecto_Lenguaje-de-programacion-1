@@ -1,7 +1,17 @@
+// Desarrollo de software
+// Henry Mauricio Paredes Quintanilla 
+// Lenguaje de programacion I
+
 package com.example.tienda.model;
 
-import jakarta.persistence.*; // Importa las anotaciones estructurales (@Entity, @Table, @Id, etc.)
-import java.time.LocalDateTime; // Importa la herramienta para manejar la fecha y hora de los mensajes
+import java.time.LocalDateTime; // Importa las anotaciones estructurales (@Entity, @Table, @Id, etc.)
+
+import jakarta.persistence.Column; // Importa la herramienta para manejar la fecha y hora de los mensajes
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity // Le avisa a Spring Boot y Hibernate que esta clase representa una tabla real
         // en la Base de Datos
@@ -13,22 +23,22 @@ public class Contacto {
     private Long id; // Variable para almacenar el identificador único del mensaje
 
     @Column(nullable = false) // Crea una columna en MySQL que no permite valores vacíos (NOT NULL)
-    private String nombre; // Variable para guardar el nombre del usuario que escribe
+    private String nombre; 
 
-    @Column(nullable = false) // Crea una columna que obliga a registrar un correo obligatoriamente
-    private String correo; // Variable para guardar el correo electrónico del remitente
+    @Column(nullable = false) 
+    private String correo; 
 
-    @Column(nullable = false) // Crea una columna obligatoria para el título o tema del mensaje
-    private String asunto; // Variable para guardar el asunto del mensaje de soporte
+    @Column(nullable = false) 
+    private String asunto; 
 
     // Crea una columna de tipo "TEXT" en MySQL para almacenar textos muy largos (párrafos grandes)
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String mensaje; // Variable para guardar el cuerpo del reclamo, duda o sugerencia
+    private String mensaje; 
 
-    private LocalDateTime fechaEnvio; // Columna para registrar el día y la hora exacta del envío
+    private LocalDateTime fechaEnvio; 
 
     // CONSTRUCTOR VACÍO (OBLIGATORIO PARA HIBERNATE)
-    // Sirve para que el motor de base de datos pueda crear un objeto vacío y luego rellenarlo con los datos de MySQL
+    
     public Contacto() {
     }
 
